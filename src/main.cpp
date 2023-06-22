@@ -1,39 +1,15 @@
-/**
-
-* Goal
-
-This program sets the function keys for the Logitech K380 bluetooth keyboard on Windows. 
-Having the F1-F12 without pressing the Fn key is nice for developers.
-
-I wanted a simple way to do the same as the Options/Options+ software WITHOUT their 
-continuously running processes.
-
-* How to build
-
-- prerequisite : install mingw
-- build setFnKeys.exe with :
-    gcc main.c -o dist/setFnKeys.exe -I hidapi/include -L hidapi/x86 -lhidapi
-- build setMediaKeys.exe with :
-    gcc main.c -D setMediaKeys -o dist/setMediaKeys.exe -I hidapi/include -L hidapi/x86 -lhidapi
-
-* Inspiration
-
-code from : https://github.com/keighrim/k810fn/blob/master/win/k810fn/k810fnCLI.cpp
-values from : https://github.com/jergusg/k380-function-keys-conf/blob/master/k380_conf.c
-
-*/
-
 #include <iostream>
 #include <cstring>
-#include <hidapi.h>
 #include <unistd.h>
+#include <hidapi.h>
+
 
 #define MAX_STR 255
 
 int main(int argc, char *argv[])
 {
     int seq_len = 7;
-
+    
     const unsigned char k380_seq_fkeys_on[] = {0x10, 0xff, 0x0b, 0x1e, 0x00, 0x00, 0x00};
     const unsigned char k380_seq_fkeys_off[] = {0x10, 0xff, 0x0b, 0x1e, 0x01, 0x00, 0x00};
     
@@ -90,13 +66,10 @@ int main(int argc, char *argv[])
             }
             
             hid_close(handle);
-            if (res < 0)
-            {
+            if (res < 0){
                 result = -1;
                 break;
-            }
-            else
-            {
+            }else{
                 result = 0;
                 break;
             }
